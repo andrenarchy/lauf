@@ -1,0 +1,34 @@
+{
+  "name": "lauf",
+  "version": "1.0.0-alpha.1",
+  "description": "Migration runner for Typescript",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrenarchy/lauf.git"
+  },
+  "keywords": [
+    "migrations",
+    "typescript",
+    "esm",
+    "postgresql"
+  ],
+  "author": "André Gaul <andre@gaul.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andrenarchy/lauf/issues"
+  },
+  "homepage": "https://github.com/andrenarchy/lauf#readme",
+  "dependencies": {
+    "@types/pg": "^8.6.5",
+    "pg": "^8.7.3"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  }
+}

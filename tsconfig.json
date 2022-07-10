@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": true,
+    "lib": ["es2021"],
+    "module": "NodeNext",
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES2021"
+  },
+  "exclude": ["dist", "node_modules"]
+}
