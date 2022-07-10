@@ -5,7 +5,7 @@ import { Migration, MigrationOptions } from './migration.js'
 interface RunnerOptions {
   pgClient: pg.Client
   table: string
-  logger: (msg: string) => void
+  logger: (msg: string) => unknown
 }
 
 export interface AppliedMigration<O extends MigrationOptions> {
@@ -86,9 +86,9 @@ export interface RunMigrationsOptions<O extends MigrationOptions> {
   setup: () => Promise<O>
   teardown: (o: O) => Promise<void>
   migrations: Migration<O>[]
-  mode: 'latest' | 'up' | 'down'
-  logger: (msg: string) => void
-  table: string
+  mode?: 'latest' | 'up' | 'down'
+  logger?: (msg: string) => void
+  table?: string
 }
 
 export async function runMigrations<O extends MigrationOptions>({
@@ -98,7 +98,7 @@ export async function runMigrations<O extends MigrationOptions>({
   mode = 'latest',
   logger = console.log,
   table = '_migrations'
-}: RunMigrationsOptions<O>) {
+}: RunMigrationsOptions<O>): Promise<Migration<O>[]> {
   const options = await setup()
 
   const runnerOptions: RunnerOptions = {
@@ -115,28 +115,30 @@ export async function runMigrations<O extends MigrationOptions>({
     case 'down': {
       if (appliedMigrations.length === 0) {
         logger('No applied migrations to undo.')
-        return
+        return []
       }
-      await migrateDown(appliedMigrations[appliedMigrations.length - 1].migration, options, runnerOptions)
-      break
+      const downMigration = appliedMigrations[appliedMigrations.length - 1]
+      await migrateDown(downMigration.migration, options, runnerOptions)
+      return [downMigration.migration]
     }
     case 'up': {
       if (remainingMigrations.length === 0) {
         logger('No migrations to apply.')
-        return
+        return []
       }
-      await migrateUp(remainingMigrations[0], options, runnerOptions)
-      break
+      const upMigration = remainingMigrations[0]
+      await migrateUp(upMigration, options, runnerOptions)
+      return [upMigration]
     }
     case 'latest': {
       if (remainingMigrations.length === 0) {
         logger('No migrations to apply.')
-        return
+        return []
       }
       for (const migration of remainingMigrations) {
         await migrateUp(migration, options, runnerOptions)
       }
-      break
+      return remainingMigrations
     }
   }
 

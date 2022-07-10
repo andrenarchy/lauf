@@ -1,6 +1,6 @@
 import pg from 'pg'
 
-export type MigrationHandler<O> = (o: O) => Promise<void>
+export type MigrationHandler<O> = (o: O) => Promise<unknown>
 
 export interface MigrationOptions {
   pgClient: pg.Client
