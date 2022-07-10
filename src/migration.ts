@@ -6,7 +6,7 @@ export interface MigrationOptions {
   pgClient: pg.Client
 }
 
-export interface Migration<O extends MigrationOptions> {
+export interface Migration<O extends MigrationOptions = MigrationOptions> {
   id: string // needs to be unique
   description?: string
   up: MigrationHandler<O>
