@@ -1,5 +1,5 @@
 # 🏃‍♀️ lauf
-[![CI](https://github.com/andrenarchy/lauf/actions/workflows/ci.yaml/badge.svg)](https://github.com/andrenarchy/lauf/actions/workflows/ci.yaml) ![npm](https://img.shields.io/npm/v/lauf)
+[![CI](https://github.com/andrenarchy/lauf/actions/workflows/ci.yaml/badge.svg)](https://github.com/andrenarchy/lauf/actions/workflows/ci.yaml) [![npm](https://img.shields.io/npm/v/lauf)](https://www.npmjs.com/package/lauf)
 
 *lauf* is a lightweight migration runner for Typescript.
 
