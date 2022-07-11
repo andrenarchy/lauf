@@ -10,7 +10,9 @@
 📦 Use any packages you want in your migrations.<br/>
 🪶 Lightweight: only a single dependency (`pg`).
 
-## Example
+## Documentation
+
+### Example
 
 Migrations can be run like
 ```typescript
@@ -75,7 +77,7 @@ Setting the `mode` option to `up` or `down` you can migrate step-wise up or down
 
 ### Further databases or storages
 
-The `setup` method can return arbitrary further properties. For example:
+The `setup` function can return arbitrary further properties. All returned properties will be passed to the migrations and the `teardown` function. For example:
 
 ```typescript
 await runMigrations({
