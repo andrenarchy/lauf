@@ -111,36 +111,40 @@ export async function runMigrations<O extends MigrationOptions>({
 
   const { appliedMigrations, remainingMigrations } = await compareMigrations(migrations, runnerOptions)
 
-  switch (mode) {
-    case 'down': {
-      if (appliedMigrations.length === 0) {
-        logger('No applied migrations to undo.')
-        return []
+  const result: Migration<O>[] = await (async () => {
+    switch (mode) {
+      case 'down': {
+        if (appliedMigrations.length === 0) {
+          logger('No applied migrations to undo.')
+          return []
+        }
+        const downMigration = appliedMigrations[appliedMigrations.length - 1]
+        await migrateDown(downMigration.migration, options, runnerOptions)
+        return [downMigration.migration]
       }
-      const downMigration = appliedMigrations[appliedMigrations.length - 1]
-      await migrateDown(downMigration.migration, options, runnerOptions)
-      return [downMigration.migration]
+      case 'up': {
+        if (remainingMigrations.length === 0) {
+          logger('No migrations to apply.')
+          return []
+        }
+        const upMigration = remainingMigrations[0]
+        await migrateUp(upMigration, options, runnerOptions)
+        return [upMigration]
+      }
+      case 'latest': {
+        if (remainingMigrations.length === 0) {
+          logger('No migrations to apply.')
+          return []
+        }
+        for (const migration of remainingMigrations) {
+          await migrateUp(migration, options, runnerOptions)
+        }
+        return remainingMigrations
+      }
     }
-    case 'up': {
-      if (remainingMigrations.length === 0) {
-        logger('No migrations to apply.')
-        return []
-      }
-      const upMigration = remainingMigrations[0]
-      await migrateUp(upMigration, options, runnerOptions)
-      return [upMigration]
-    }
-    case 'latest': {
-      if (remainingMigrations.length === 0) {
-        logger('No migrations to apply.')
-        return []
-      }
-      for (const migration of remainingMigrations) {
-        await migrateUp(migration, options, runnerOptions)
-      }
-      return remainingMigrations
-    }
-  }
+  })()
 
   await teardown(options)
+
+  return result
 }
