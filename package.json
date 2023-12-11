@@ -30,7 +30,7 @@
     "pg": "^8.7.3"
   },
   "devDependencies": {
-    "ava": "^5.0.1",
+    "ava": "^6.0.1",
     "typescript": "^5.0.2"
   }
 }
