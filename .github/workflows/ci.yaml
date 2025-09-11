@@ -26,9 +26,9 @@ jobs:
     env:
       POSTGRESQL_URL: postgres://postgres:test@127.0.0.1:5432/postgres?sslmode=disable
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
